@@ -86,6 +86,9 @@ function initCells() {
 
     currentColor = cells[0][0];
     cells[0][0].isFlooded = true;
+
+    // any cells touching the top left cell should be flooded to start
+    floodCells(currentColor);
 }
 
 function drawCells() {
