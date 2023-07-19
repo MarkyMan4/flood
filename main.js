@@ -1,12 +1,14 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const numMovesDisp = document.getElementById('num-moves-disp');
 
 let colors = ['#1259ff', 'red', 'yellow', 'ForestGreen', 'cyan', '#8f26ff', 'orange', 'violet'];
 let cellsAcross = 20;
 let cellsDown = 20;
 let cellSize = canvas.width / cellsAcross;
-
 let currentColor;
+let numMoves = 0;
+
 
 class Cell {
     constructor(x, y) {
@@ -27,6 +29,9 @@ class Cell {
 let cells = [];
 
 document.addEventListener('mousedown', ev => {
+    numMoves++;
+    numMovesDisp.innerHTML = `Moves: ${numMoves}`;
+
     // get mouse position within canvas
     let rect = canvas.getBoundingClientRect();
     let x = ev.clientX - rect.left;
@@ -84,11 +89,14 @@ function initCells() {
         cells.push(row);
     }
 
-    currentColor = cells[0][0];
+    currentColor = cells[0][0].color;
     cells[0][0].isFlooded = true;
 
     // any cells touching the top left cell should be flooded to start
     floodCells(currentColor);
+
+    // display number of moves made
+    numMovesDisp.innerHTML = `Moves: ${numMoves}`;
 }
 
 function drawCells() {
