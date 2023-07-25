@@ -49,6 +49,9 @@ document.addEventListener('mousedown', ev => {
     });
 });
 
+// TODO: need some better algorithm here so cells don't get missed
+//       there is currently a bug where if a cell has already been checked
+//       but is touching a cell that will get flooded, it doesn't get flooded
 function floodCells(color) {
     // set each flooded cells color to the color of the clicked cell
     // after changing color, check if any cells touching a flooded cell are that color
