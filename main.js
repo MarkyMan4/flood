@@ -1,20 +1,22 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const numMovesDisp = document.getElementById('num-moves-disp');
+const numColorsSelect = document.getElementById('num-colors-select');
+const colors = ['#1259ff', 'red', 'yellow', 'ForestGreen', 'cyan', '#8f26ff', 'orange', 'violet'];
 
-let colors = ['#1259ff', 'red', 'yellow', 'ForestGreen', 'cyan', '#8f26ff', 'orange', 'violet'];
+let colors_in_use = [];
 let cellsAcross = 20;
 let cellsDown = 20;
 let cellSize = canvas.width / cellsAcross;
 let currentColor;
 let numMoves = 0;
-
+let cells = [];
 
 class Cell {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.color = colors_in_use[Math.floor(Math.random() * colors_in_use.length)];
         this.isFlooded = false;
     }
 
@@ -25,8 +27,6 @@ class Cell {
         ctx.fill();
     }
 }
-
-let cells = [];
 
 document.addEventListener('mousedown', ev => {
     numMoves++;
@@ -82,6 +82,8 @@ function floodCells(color) {
 }
 
 function initCells() {
+    cells = [];
+    
     for(let i = 0; i < cellsDown; i++) {
         let row = [];
 
@@ -110,5 +112,19 @@ function drawCells() {
     });
 }
 
-initCells();
-drawCells();
+function resetGame() {
+    numMoves = 0;
+    numMovesDisp.innerHTML = `Moves: ${numMoves}`;
+
+    colors_in_use = [];
+    let numColors = parseInt(numColorsSelect.value);
+
+    for(let i = 0; i < numColors; i++) {
+        colors_in_use.push(colors[i]);
+    }
+
+    initCells();
+    drawCells();
+}
+
+resetGame();
